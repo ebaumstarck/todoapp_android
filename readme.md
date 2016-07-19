@@ -1,6 +1,12 @@
 This is my todo items app.
 
+<img src="http://g.recordit.co/gM01EbWigV.gif" width="200">
+
+# Architecture #
+
 The items are stored in SQLite. The database is managed by TodoAppDatabase that uses the interface TableProvider to create the tables it needs. TodoItemsTableProvider implements the interface and defines the todo items table with fields for the string value, created at, updated at, priority, and due date. Todo items are managed by TodoItemsHandler which is a singleton.
+
+# Step by step demo #
 
 When you boot up the app it shows no todo items. There is a custom action bar with a logo on the left and two buttons on the right.
 
