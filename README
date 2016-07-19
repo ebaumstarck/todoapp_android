@@ -4,7 +4,7 @@ The items are stored in SQLite. The database is managed by TodoAppDatabase that 
 
 When you boot up the app it shows no todo items. There is a custom action bar with a logo on the left and two buttons on the right.
 
-<screenshot1>
+![alt tag](https://github.com/ebaumstarck/todoapp_android/blob/master/demo/screenshot1.png)
 
 You add items by typing in text at the bottom and clicking "Add Item." They are sorted by name at first.
 
