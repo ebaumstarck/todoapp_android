@@ -20,15 +20,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TodoItemEditer {
     // todo items in sorted order
     ArrayList<TodoItem> todoItems;
     TodoItemArrayAdapter itemsAdapter;
     ListView lvItems;
-//    private static final int EDIT_ACTIVITY_CODE = 1;
 
     // action toolbar and the sort button
     Toolbar toolbar;
@@ -37,12 +34,6 @@ public class MainActivity extends AppCompatActivity {
     // the edit and delete buttons on each row are visible
     boolean rowButtonsVisible = false;
 
-    private enum SortOrder {
-        ALPHA,
-        CREATED_AT,
-        UPDATED_AT,
-        PRIORITY,
-    }
     // the order todo items are sorted in
     private SortOrder currentSort;
     private boolean ascending;
@@ -63,11 +54,10 @@ public class MainActivity extends AppCompatActivity {
         currentSort = SortOrder.ALPHA;
         ascending = true;
 
-        lvItems = (ListView)findViewById(R.id.lvItems);
+        lvItems = (ListView) findViewById(R.id.lvItems);
 
         readItems();
-        itemsAdapter = new TodoItemArrayAdapter(this, todoItems);
-        lvItems.setAdapter(itemsAdapter);
+        itemsAdapter = new TodoItemArrayAdapter(this, this, todoItems, lvItems);
         setupListViewListener();
 
         updateSortOrder(currentSort, ascending);
@@ -80,106 +70,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sortTodoItems() {
-        switch (currentSort) {
-            case ALPHA:
-            default:
-                Collections.sort(
-                        todoItems,
-                        new Comparator<TodoItem>() {
-                            @Override
-                            public int compare(TodoItem lhs, TodoItem rhs) {
-                                if (ascending) {
-                                    return lhs.getValue().toLowerCase().compareTo(rhs.getValue().toLowerCase());
-                                } else {
-                                    return rhs.getValue().toLowerCase().compareTo(lhs.getValue().toLowerCase());
-                                }
-                            }
-                        }
-                );
-                break;
-            case CREATED_AT:
-                Collections.sort(
-                        todoItems,
-                        new Comparator<TodoItem>() {
-                            @Override
-                            public int compare(TodoItem lhs, TodoItem rhs) {
-                                long lhsCreatedAt = lhs.getCreatedAtMs();
-                                long rhsCreatedAt = rhs.getCreatedAtMs();
-                                if (lhsCreatedAt == rhsCreatedAt) {
-                                    return 0;
-                                } else if (lhsCreatedAt < rhsCreatedAt) {
-                                    if (ascending) {
-                                        return -1;
-                                    } else {
-                                        return 1;
-                                    }
-                                } else {
-                                    if (ascending) {
-                                        return 1;
-                                    } else {
-                                        return -1;
-                                    }
-                                }
-                            }
-                        }
-                );
-                break;
-            case UPDATED_AT:
-                Collections.sort(
-                        todoItems,
-                        new Comparator<TodoItem>() {
-                            @Override
-                            public int compare(TodoItem lhs, TodoItem rhs) {
-                                long lhsCreatedAt = lhs.getUpdatedAtMs();
-                                long rhsCreatedAt = rhs.getUpdatedAtMs();
-                                if (lhsCreatedAt == rhsCreatedAt) {
-                                    return 0;
-                                } else if (lhsCreatedAt < rhsCreatedAt) {
-                                    if (ascending) {
-                                        return -1;
-                                    } else {
-                                        return 1;
-                                    }
-                                } else {
-                                    if (ascending) {
-                                        return 1;
-                                    } else {
-                                        return -1;
-                                    }
-                                }
-                            }
-                        }
-                );
-                break;
-            case PRIORITY:
-                Collections.sort(
-                        todoItems,
-                        new Comparator<TodoItem>() {
-                            @Override
-                            public int compare(TodoItem lhs, TodoItem rhs) {
-                                long lhsPriority = lhs.getPriority();
-                                long rhsPriority = rhs.getPriority();
-                                if (lhsPriority == rhsPriority) {
-                                    return 0;
-                                } else if (lhsPriority < rhsPriority) {
-                                    if (ascending) {
-                                        return -1;
-                                    } else {
-                                        return 1;
-                                    }
-                                } else {
-                                    if (ascending) {
-                                        return 1;
-                                    } else {
-                                        return -1;
-                                    }
-                                }
-                            }
-                        }
-                );
-                break;
-        }
-        itemsAdapter.notifyDataSetChanged();
+        itemsAdapter.sortTodoItems(currentSort, ascending);
     }
 
     private void updateSortOrder(SortOrder sortOrder, boolean ascending) {
@@ -188,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         sortTodoItems();
     }
 
-    public void onAddItem(View v) {
+    public void onAddItem(View view) {
         EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
         if (itemText.length() == 0) {
@@ -223,20 +114,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void editTodoItem(TodoItem todoItem) {
+    @Override
+    public void editTodoItem(TodoItem todoItem) {
         Intent myIntent = new Intent(MainActivity.this, EditActivity.class);
         myIntent.putExtra(EditActivity.TASK_ID_KEY, todoItem.getId());
         MainActivity.this.startActivityForResult(myIntent, 0);
     }
 
-    private void rowClickHandler(View view) {
-        setEditLabelVisibility(false);
-        //get the row the clicked button is in
-        RelativeLayout row = (RelativeLayout) view.getParent();
-        editTodoItem((TodoItem) row.getTag());
-    }
-
-    private void deleteTodoItem(TodoItem todoItem) {
+    @Override
+    public void deleteTodoItem(TodoItem todoItem) {
         TodoItemsHandler.getInstance().deleteTodo(todoItem);
         int taskId = todoItem.getId();
         for (int i = 0; i < todoItems.size(); i++) {
@@ -248,13 +134,14 @@ public class MainActivity extends AppCompatActivity {
         itemsAdapter.notifyDataSetChanged();
     }
 
-    private void deleteClickHandler(View view) {
+    @Override
+    public void deleteClickHandler(View view) {
         setEditLabelVisibility(false);
         RelativeLayout row = (RelativeLayout)view.getParent();
         final TodoItem todoItem = (TodoItem) row.getTag();
         new AlertDialog.Builder(this)
-                .setTitle("Delete: " + todoItem.getValue())
-                .setMessage("Do you really want to delete this item?")
+                .setTitle(getString(R.string.delete_todo_title) + todoItem.getValue())
+                .setMessage(getString(R.string.confirm_delete_todo))
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -279,74 +166,16 @@ public class MainActivity extends AppCompatActivity {
         updateSortOrder(newSortOrder, ascending);
     }
 
+    private void rowClickHandler(View view) {
+        setEditLabelVisibility(false);
+        //get the row the clicked button is in
+        RelativeLayout row = (RelativeLayout) view.getParent();
+        editTodoItem((TodoItem) row.getTag());
+    }
+
     private void setEditLabelVisibility(boolean visible) {
         rowButtonsVisible = visible;
-
-        final long animationDurationMs = 400;
-        Animation animFadeOut = AnimationUtils.loadAnimation(
-                getApplicationContext(), android.R.anim.fade_out);
-        animFadeOut.setDuration(animationDurationMs);
-        Animation animFadeIn = AnimationUtils.loadAnimation(
-                getApplicationContext(), android.R.anim.fade_in);
-        animFadeIn.setDuration(animationDurationMs);
-        animFadeIn.setStartOffset(animationDurationMs);
-
-
-        for (int i = 0; i < lvItems.getChildCount(); i++) {
-            RelativeLayout row = (RelativeLayout) lvItems.getChildAt(i);
-            TextView editText = (TextView) row.findViewById(R.id.editLabel);
-            TextView deleteText = (TextView) row.findViewById(R.id.deleteLabel);
-            TextView dueDateText= (TextView) row.findViewById(R.id.dueDateLabel);
-            TextView priorityText = (TextView) row.findViewById(R.id.rightLabel);
-
-            if (!visible) {
-                // fade out edit and delete
-                editText.setAnimation(animFadeOut);
-                editText.setVisibility(View.INVISIBLE);
-                deleteText.setAnimation(animFadeOut);
-                deleteText.setVisibility(View.INVISIBLE);
-
-                // fade in due date and priority
-                TodoItem todoItem = (TodoItem) row.getTag();
-                if (todoItem.getDueDate() != null) {
-                    dueDateText.setText(todoItem.getDueDateDisplay());
-                    dueDateText.setAnimation(animFadeIn);
-                    dueDateText.setVisibility(View.VISIBLE);
-                }
-                priorityText.setAnimation(animFadeIn);
-                priorityText.setVisibility(View.VISIBLE);
-            } else {
-                // fade out due date and priority
-                if (dueDateText.getVisibility() == View.VISIBLE) {
-                    dueDateText.setAnimation(animFadeOut);
-                    dueDateText.setVisibility(View.INVISIBLE);
-                }
-                priorityText.setAnimation(animFadeOut);
-                priorityText.setVisibility(View.INVISIBLE);
-
-                // fade in edit and delete
-                editText.setAnimation(animFadeIn);
-                editText.setVisibility(View.VISIBLE);
-                editText.setOnClickListener(
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                rowClickHandler(v);
-                            }
-                        }
-                );
-                deleteText.setAnimation(animFadeIn);
-                deleteText.setVisibility(View.VISIBLE);
-                deleteText.setOnClickListener(
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                deleteClickHandler(v);
-                            }
-                        }
-                );
-            }
-        }
+        itemsAdapter.setEditLabelVisibility(rowButtonsVisible);
     }
 
     public void onEditAction(MenuItem menuItem) {

@@ -7,13 +7,13 @@
         android:id="@+id/miEdit"
         app:showAsAction="ifRoom|withText"
         android:icon="@drawable/edit_icon"
-        android:title="Edit"
+        android:title="@string/menu_edit"
         android:onClick="onEditAction" />
 
     <item
         android:id="@+id/miSort"
         app:showAsAction="ifRoom"
         android:icon="@drawable/sort_icon"
-        android:title="Sort"
+        android:title="@string/menu_sort"
         android:onClick="onSortAction" />
 </menu>

@@ -1,6 +1,7 @@
 package com.example.emma_baumstarck.todoapp;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -12,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -20,7 +22,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
-public class EditActivity extends AppCompatActivity implements DatePickerSelectedListener {
+public class EditActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     Toolbar toolbar;
 
     EditText taskNameText;
@@ -151,16 +153,20 @@ public class EditActivity extends AppCompatActivity implements DatePickerSelecte
     }
 
     public void onDueDateClick(View view) {
-        DialogFragment newFragment = new DatePickerFragment();
+        DatePickerFragment newFragment = new DatePickerFragment();
+
         Bundle bundle = new Bundle();
-        bundle.putInt("dueDateKey", dueDate == null ? -1 : dueDate.intValue());
+        bundle.putInt(DatePickerFragment.DUE_DATE_KEY, dueDate == null ? -1 : dueDate.intValue());
         newFragment.setArguments(bundle);
+
+        newFragment.setOnDateSetListener(this);
+
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
-    public void onDateSelected(int year, int month, int day) {
-        System.out.println("ZOO: " + year + ", " + month + ", " + day);
-        dueDate = year * 10000 + month * 100 + day;
+    @Override
+    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+        dueDate = year * 10000 + monthOfYear * 100 + dayOfMonth;
         dueDateCheckbox.setChecked(true);
         updateDueDateUI();
     }

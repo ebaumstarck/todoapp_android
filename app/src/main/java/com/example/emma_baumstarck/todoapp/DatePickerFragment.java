@@ -14,14 +14,16 @@ import java.util.Calendar;
  */
 public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
-    DatePickerSelectedListener callbackListener;
+    DatePickerDialog.OnDateSetListener listener;
+
+    public static final String DUE_DATE_KEY = "dueDateKey";
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final Calendar calendar = Calendar.getInstance();
 
         int year, month, day;
-        int dueDate = getArguments().getInt("dueDateKey");
+        int dueDate = getArguments().getInt(DUE_DATE_KEY);
         if (dueDate == -1) {
             year = calendar.get(Calendar.YEAR);
             month = calendar.get(Calendar.MONTH);
@@ -36,12 +38,12 @@ public class DatePickerFragment extends DialogFragment
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        callbackListener.onDateSelected(year, month, day);
+        if (listener != null) {
+            listener.onDateSet(view, year, month, day);
+        }
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        callbackListener = (DatePickerSelectedListener) activity;
+    public void setOnDateSetListener(DatePickerDialog.OnDateSetListener listener) {
+        this.listener = listener;
     }
 }

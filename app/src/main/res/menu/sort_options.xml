@@ -2,20 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/sortAtoZ"
-        android:title="A to Z"/>
+        android:title="@string/sort_a_to_z"/>
     <item
         android:id="@+id/sortZtoA"
-        android:title="Z to A"/>
+        android:title="@string/sort_z_to_a"/>
     <item
         android:id="@+id/sortNewest"
-        android:title="Newest first"/>
+        android:title="@string/sort_newest_first"/>
     <item
         android:id="@+id/sortOldest"
-        android:title="Oldest first"/>
+        android:title="@string/sort_oldest_first"/>
     <item
         android:id="@+id/sortImportant"
-        android:title="Important"/>
+        android:title="@string/sort_important"/>
     <item
         android:id="@+id/sortUnimportant"
-        android:title="Unimportant"/>
+        android:title="@string/sort_unimportant"/>
 </menu>

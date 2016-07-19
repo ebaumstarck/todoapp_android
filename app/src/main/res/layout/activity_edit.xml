@@ -17,19 +17,19 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/include"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp">
+        android:layout_marginLeft="@dimen/small_margin"
+        android:layout_marginRight="@dimen/small_margin">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Task Name"
+            android:text="@string/task_name"
             android:id="@+id/taskNameView"
             android:layout_below="@+id/include"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="20dp" />
+            android:layout_marginTop="@dimen/widget_vertical_spacing" />
 
         <EditText
             android:layout_width="wrap_content"
@@ -43,20 +43,20 @@
 
         <View
             android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="@dimen/tiny_margin"
+            android:layout_marginTop="@dimen/widget_vertical_spacing"
             android:background="@color/colorRule" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Priority"
+            android:text="@string/priority"
             android:id="@+id/textView3"
             android:layout_below="@+id/taskNameText"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="20dp" />
+            android:layout_marginTop="@dimen/widget_vertical_spacing" />
 
         <RadioGroup
             android:layout_width="match_parent"
@@ -71,7 +71,7 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Low"
+                android:text="@string/priority_low_select"
                 android:id="@+id/priorityLowRadio"
                 android:checked="false"
                 android:buttonTint="@color/colorRule" />
@@ -79,7 +79,7 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Regular"
+                android:text="@string/priority_regular_select"
                 android:id="@+id/priorityRegularRadio"
                 android:checked="true"
                 android:buttonTint="@color/colorRule" />
@@ -87,7 +87,7 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="High"
+                android:text="@string/priority_high_select"
                 android:id="@+id/priorityHighRadio"
                 android:checked="false"
                 android:buttonTint="@color/colorRule" />
@@ -95,27 +95,27 @@
 
         <View
             android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="20dp"
+            android:layout_height="@dimen/tiny_margin"
+            android:layout_marginTop="@dimen/widget_vertical_spacing"
             android:background="@color/colorRule" />
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="@dimen/widget_vertical_spacing">
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Set due date: "
+                android:text="@string/set_due_date"
                 android:id="@+id/dueDateCheckBox" />
 
             <Button
                 android:id="@+id/dueDateButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="07/17/2016"
+                android:text="@string/due_date_placeholder"
                 android:onClick="onDueDateClick" />
         </LinearLayout>
 
@@ -123,24 +123,24 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="@dimen/widget_vertical_spacing">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Created at:"
+                android:text="@string/created_at"
                 android:id="@+id/textView"
                 android:layout_above="@+id/textView2"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginBottom="20dp"
-                android:width="100dp" />
+                android:layout_marginBottom="@dimen/widget_vertical_spacing"
+                android:width="@dimen/date_display_width" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="created at"
+                android:text=""
                 android:id="@+id/taskCreatedAtView"
                 android:layout_alignTop="@+id/textView"
                 android:layout_toRightOf="@+id/taskNameView"
@@ -155,19 +155,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Updated at:"
+                android:text="@string/updated_at"
                 android:id="@+id/textView2"
                 android:layout_above="@+id/cancelButton"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginBottom="20dp"
-                android:width="100dp" />
+                android:layout_marginBottom="@dimen/widget_vertical_spacing"
+                android:width="@dimen/date_display_width" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="updated at"
+                android:text=""
                 android:id="@+id/taskUpdatedAtView"
                 android:layout_alignTop="@+id/textView2"
                 android:layout_alignLeft="@+id/taskCreatedAtView"
@@ -184,7 +184,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cancel"
+                android:text="@string/cancel"
                 android:id="@+id/cancelButton"
                 android:nestedScrollingEnabled="true"
                 android:onClick="onCancelButton"
@@ -195,7 +195,7 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Update"
+                android:text="@string/update"
                 android:id="@+id/updateButton"
                 android:onClick="onUpdateButton"
                 android:layout_alignParentBottom="true"

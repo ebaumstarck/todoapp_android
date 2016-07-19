@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
-    android:layout_height="60dp"
+    android:layout_height="@dimen/todo_height"
     android:layout_width="fill_parent">
 
     <TextView
@@ -9,10 +9,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:textSize="20dp"
+        android:textSize="@dimen/todo_big_text"
         android:singleLine="true"
         android:ellipsize="end"
-        android:width="190dp"
+        android:width="@dimen/todo_text_width"
         android:gravity="start"
         android:layout_centerVertical="true" />
 
@@ -20,13 +20,13 @@
         android:id="@+id/deleteLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="DELETE"
-        android:textSize="12dp"
+        android:text="@string/delete_caps"
+        android:textSize="@dimen/todo_small_text"
         android:textColor="@color/colorRed"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="@dimen/small_margin"
         android:visibility="invisible"
-        android:layout_marginRight="40dp"
+        android:layout_marginRight="@dimen/todo_delete_margin"
         android:textStyle="bold"
         android:clickable="true"
         android:layout_centerVertical="true" />
@@ -35,24 +35,24 @@
         android:id="@+id/dueDateLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="07/11"
-        android:textSize="12dp"
+        android:text="@string/due_date_short_placeholder"
+        android:textSize="@dimen/todo_small_text"
         android:layout_alignParentRight="true"
         android:visibility="invisible"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="60dp"
+        android:layout_marginTop="@dimen/small_margin"
+        android:layout_marginRight="@dimen/todo_due_margin"
         android:layout_centerVertical="true" />
 
     <TextView
         android:id="@+id/editLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="EDIT"
-        android:textSize="12dp"
+        android:text="@string/edit_caps"
+        android:textSize="@dimen/todo_small_text"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="@dimen/small_margin"
         android:visibility="invisible"
-        android:layout_marginRight="5dp"
+        android:layout_marginRight="@dimen/small_margin"
         android:textStyle="bold"
         android:clickable="true"
         android:layout_centerVertical="true" />
@@ -61,9 +61,9 @@
         android:id="@+id/rightLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="10dp"
+        android:textSize="@dimen/todo_small_text"
+        android:layout_marginTop="@dimen/small_margin"
+        android:layout_marginRight="@dimen/todo_right_margin"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true" />
 </RelativeLayout>
